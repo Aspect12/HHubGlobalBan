@@ -1,11 +1,18 @@
 
+--[[------------------------------------------------------------------------------------------
+    Half-Life 2 Roleplay Hub - Global Ban Plugin
+
+    If you require support, have suggestions, questions, or concerns, please join our discord:
+    https://discord.gg/hyPtDAF
+--]]------------------------------------------------------------------------------------------
+
 local PLUGIN = PLUGIN;
 local Clockwork = Clockwork;
 
+Clockwork.kernel:IncludePrefixed("sh_whitelist.lua");
 Clockwork.kernel:IncludePrefixed("sv_plugin.lua");
 
-PLUGIN:SetGlobalAlias("cwHHubGlobalBan");
-PLUGIN.version = "v3"
+PLUGIN.version = "v5";
 
 if (SERVER) then
 	function PLUGIN:CheckVersion()
@@ -24,7 +31,7 @@ if (SERVER) then
 				if (versions["cwHHubGlobalBan"] == self.version) then
 					MsgC(Color(46, 204, 113), "[HGB] The HHub Global Ban plugin is up to date!\n");
 				else
-					MsgC(Color(231, 76, 60), "[HGB] The HHub Global Ban plugin is out of date! Please install the latest version at your earliest convenience.\n");
+					MsgC(Color(231, 76, 60), "[HGB] The HHub Global Ban plugin is out of date! Please install the latest version at your earliest convenience.\nYou may acquire the latest version from here: https://discord.gg/hyPtDAF\n");
 					MsgC(Color(231, 76, 60), "[HGB] Local version: "..self.version.."\n");
 					MsgC(Color(231, 76, 60), "[HGB] Newest version: "..versions["cwHHubGlobalBan"].."\n");
 				end;
@@ -36,11 +43,11 @@ if (SERVER) then
 		end);
 	end;
 
-	local Initialized = false -- Ensure the plugin is initialized.
-	function PLUGIN:Think()
-		if (!Initialized) then
-			self:CheckVersion()
-			Initialized = true;
+	local initialized = false; -- Ensure the plugin is initialized.
+	function PLUGIN:Think() -- This shouldn't be done this way but it's the only way possible with ISteamHTTP.
+		if (!initialized) then
+			self:CheckVersion();
+			initialized = true;
 		end;
-	end;
+    end;
 end;
