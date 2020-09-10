@@ -6,13 +6,16 @@ If you require support, have suggestions, questions, or concerns, please join ou
 https://discord.gg/hyPtDAF
 ------------------------------------------------------------------------------------------
 
-[VERSION: 4/2]
+[VERSION: 6/4]
 
 INSTALL INSTRUCTIONS:
 (This plugin is Schema-Agnostic. That means it is not restricted to only the Half-Life 2 Roleplay Schema.)
 
 For the Clockwork Framework, navigate to the "Clockwork" folder and upload the "hh_globalban" folder into your server, in the "garrysmod/gamemodes/cwhl2rp/plugins/" directory.
 For the Nutscript and Helix Framework, navigate to the "Nutscript & Helix" folder and upload the "hh_globalban.lua" file into your server, in the "garrysmod/gamemodes/nshl2rp(or ixhl2rp respectfully)/plugins/" directory.
+
+VERSION 6/4 CHANGELOG:
+The plugin now uses new links to fetch the banlist from the web.
 
 VERSION 5/3 CHANGELOG:
 The plugin has received some minor optimizations for the whitelist system.

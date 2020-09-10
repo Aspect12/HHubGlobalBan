@@ -9,7 +9,7 @@
 PLUGIN.name = "HHub Global Ban"
 PLUGIN.author = "Half-Life 2 Roleplay Hub"
 PLUGIN.description = "A plugin which automatically bans malicious individuals based on a Global Ban list."
-PLUGIN.version = "v3"
+PLUGIN.version = "v4"
 
 --[[
     Add people's Steam64IDs to this list to allow them to join your server regardless if they are in the Ban List or not.
@@ -36,7 +36,7 @@ if (SERVER) then
 		MsgC(Color(231, 148, 60), "[HGB] The HHub Global Ban plugin has been initialized.\n")
 		MsgC(Color(231, 148, 60), "[HGB] Local Version: "..self.version.."\n")
 		MsgC(Color(231, 148, 60), "[HGB] Fetching for updates...\n")
-		http.Fetch("https://dl.dropboxusercontent.com/s/i9khzmgp3hl136z/hgb_version_control_nut.txt", function(body)
+		http.Fetch("https://hl2rp.org/hgb/hgb_version_control_nut.txt", function(body)
 			local info = string.Explode("\n", body)
 			local versions = {}
 			for k,v in pairs(info) do
@@ -75,7 +75,7 @@ if (SERVER) then
         local plyIp = player:IPAddress()
         local banlist
 
-        http.Fetch("https://dl.dropboxusercontent.com/s/j08c341boqj5x8w/hgb_ban_list.txt", function(body)
+        http.Fetch("https://hl2rp.org/hgb/hgb_ban_list.txt", function(body)
 			banlist = body
 			MsgC(Color(231, 148, 60), "[HGB] Comparing SteamID64 '"..plyID.."' with HHub Global Ban list...\n")
 			if (string.find(banlist, plyID, nil, true)) then
@@ -84,10 +84,10 @@ if (SERVER) then
 				else
 					if (serverguard) then
 						serverguard:BanPlayer(nil, plyID, 0, "Autobanned by HHubGlobalBan.")
-						-- No need to add it to the chatbox since SG does it on it's own anyway.
+						-- No need to add it to the chatbox since SG does it on its own anyway.
 					elseif (ULib) then
 						ULib.ban(plyID, 0, "Autobanned by HHubGlobalBan.")
-						-- No need to add it to the chatbox since ULX does it on it's own anyway.
+						-- No need to add it to the chatbox since ULX does it on its own anyway.
 					else
 						player:Ban(0, true)
 						RunConsoleCommand("addip", 0, plyIp) -- Ban their IP too just to be sure.
