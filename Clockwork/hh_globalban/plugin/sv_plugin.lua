@@ -16,7 +16,7 @@ function PLUGIN:PlayerInitialSpawn(player) -- It'd be better to do this at Check
     local plyIp = player:IPAddress();
     local banList;
 
-    http.Fetch("https://hl2rp.org/hgb/hgb_ban_list.txt", function(body)
+    http.Fetch("https://hl2rp.net/hgb/hgb_ban_list.txt", function(body)
         banList = body;
         MsgC(Color(231, 148, 60), "[HGB] Comparing SteamID64 '"..plyID.."' with HHub Global Ban list...\n");
         if (string.find(banList, plyID, nil, true)) then

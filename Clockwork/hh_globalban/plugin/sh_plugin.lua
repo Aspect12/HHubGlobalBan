@@ -12,14 +12,14 @@ local Clockwork = Clockwork;
 Clockwork.kernel:IncludePrefixed("sh_whitelist.lua");
 Clockwork.kernel:IncludePrefixed("sv_plugin.lua");
 
-PLUGIN.version = "v6";
+PLUGIN.version = "v7";
 
 if (SERVER) then
 	function PLUGIN:CheckVersion()
 		MsgC(Color(231, 148, 60), "[HGB] The HHub Global Ban plugin has been initialized.\n");
 		MsgC(Color(231, 148, 60), "[HGB] Local Version: "..self.version.."\n");
 		MsgC(Color(231, 148, 60), "[HGB] Fetching for updates...\n");
-		http.Fetch("https://hl2rp.org/hgb/hgb_version_control.txt", function(body)
+		http.Fetch("https://hl2rp.net/hgb/hgb_version_control.txt", function(body)
 			local info = string.Explode("\n", body);
 			local versions = {};
 			for k,v in pairs(info) do
