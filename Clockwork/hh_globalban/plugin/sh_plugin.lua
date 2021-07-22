@@ -7,21 +7,22 @@
 --]]------------------------------------------------------------------------------------------
 
 local PLUGIN = PLUGIN;
-local Clockwork = Clockwork;
 
 Clockwork.kernel:IncludePrefixed("sh_whitelist.lua");
 Clockwork.kernel:IncludePrefixed("sv_plugin.lua");
 
-PLUGIN.version = "v7";
+PLUGIN.version = "v8";
 
 if (SERVER) then
 	function PLUGIN:CheckVersion()
 		MsgC(Color(231, 148, 60), "[HGB] The HHub Global Ban plugin has been initialized.\n");
 		MsgC(Color(231, 148, 60), "[HGB] Local Version: "..self.version.."\n");
 		MsgC(Color(231, 148, 60), "[HGB] Fetching for updates...\n");
+
 		http.Fetch("https://hl2rp.net/hgb/hgb_version_control.txt", function(body)
 			local info = string.Explode("\n", body);
 			local versions = {};
+
 			for k,v in pairs(info) do
 				local version_info = string.Explode(": ", v);
 				versions[version_info[1]] = version_info[2];
@@ -44,9 +45,11 @@ if (SERVER) then
 	end;
 
 	local initialized = false; -- Ensure the plugin is initialized.
+
 	function PLUGIN:Think() -- This shouldn't be done this way but it's the only way possible with ISteamHTTP.
 		if (!initialized) then
 			self:CheckVersion();
+			
 			initialized = true;
 		end;
     end;

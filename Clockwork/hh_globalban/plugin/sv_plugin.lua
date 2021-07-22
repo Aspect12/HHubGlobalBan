@@ -9,45 +9,44 @@
 local PLUGIN = PLUGIN;
 local Clockwork = Clockwork;
 
--- Called when a player initially spawns.
-function PLUGIN:PlayerInitialSpawn(player) -- It'd be better to do this at CheckPassword()
-    local plyName = player:Name(); -- But then we'd have to hook onto the DB to check for bans and it's just not worth the hussle.
-    local plyID = player:SteamID64();
-    local plyIp = player:IPAddress();
-    local banList;
+local kickReason = [[
+    The HHub Global Ban system has denied your access to this server.
 
+    This can happen for several reasons, including, but not limited to:
+    - Using cheats in a server.
+    - Server-griefing in any way (exploits, backdoors, etc).
+    - Participating in targeted harassment (Doxing, DDoSing, etc).
+    - Practicing sexual behavior with a minor in any way.
+
+    If you believe this is a mistake, appeal your ban on the HHub Discord server, here:
+    https://discord.gg/hyPtDAF]];
+
+-- Called when a player connects to allow the Lua system to check the password.
+function PLUGIN:CheckPassword(steamID64, ipAddress, svPassword, clPassword, name)
     http.Fetch("https://hl2rp.net/hgb/hgb_ban_list.txt", function(body)
-        banList = body;
-        MsgC(Color(231, 148, 60), "[HGB] Comparing SteamID64 '"..plyID.."' with HHub Global Ban list...\n");
-        if (string.find(banList, plyID, nil, true)) then
-            if (PLUGIN:IsWhitelisted(plyID)) then
-                MsgC(Color(231, 148, 60), "[HGB] "..plyName.." is in the HHub Global Ban list but is whitelisted.\n");
+        MsgC(Color(231, 148, 60), "[HGB] Comparing SteamID64 '"..steamID64.."' ("..name..") with HHub Global Ban list...\n");
+
+        local _, endPos = string.find(body, steamID64, nil, true);
+
+        if (endPos) then
+            if (PLUGIN:IsWhitelisted(steamID64)) then
+                MsgC(Color(231, 148, 60), "[HGB] "..name.." is in the HHub Global Ban list but is whitelisted.\n");
             else
-                if (serverguard) then
-                    serverguard:BanPlayer(nil, plyID, 0, "Autobanned by HHubGlobalBan");
-                    -- No need to add it to the chatbox since SG does it on it's own anyway.
-                elseif (ULib) then
-                    ULib.ban(plyID, 0, "Autobanned by HHubGlobalBan");
-                    -- No need to add it to the chatbox since ULX does it on it's own anyway.
-                else
-                    Clockwork.bans:Add(plyID, 0, "Autobanned by HHubGlobalBan", function()
-                        local listeners = {};
-                            
-                        for k, v in pairs(cwPlayer.GetAll()) do
-                            if (v:IsUserGroup("operator") or v:IsAdmin() or v:IsSuperAdmin()) then
-                                listeners[#listeners + 1] = v;
-                            end;
+                if (body[endPos + 1] == ")") then
+                    for _, player in ipairs(player.GetAll()) do
+                        if (player:IsAdmin()) then
+                            player:ChatPrint("[HGB] Warning: Potentially malicious player ("..name..") has connected to the server!");
                         end;
-                        
-                        Clockwork.chatBox:SendColored(listeners, Color(231, 76, 60), "[HGB] "..plyName.." was automatically banned for being in the HHub Global Ban list.");
-                        MsgC(Color(231, 76, 60), "[HGB] "..plyName.." was automatically banned for being in the HHub Global Ban list.\n");
-                    end);
-                    
-                    Clockwork.bans:Add(plyIp, 0, "Autobanned by HHubGlobalBan"); -- Ban their IP too just to be sure.
+                    end;
+                else
+                    local steamID = util.SteamIDFrom64(steamID64);
+
+                    game.KickID(steamID, kickReason);
+                    MsgC(Color(231, 76, 60), "[HGB] "..name.." was automatically kicked for being in the HHub Global Ban list.\n");
                 end;
             end;
         else
-            MsgC(Color(46, 204, 113), "[HGB] "..plyName.." is not in the Global Ban list.\n");
+            MsgC(Color(46, 204, 113), "[HGB] "..name.." is not in the Global Ban list.\n");
         end;
     end);
 end;
