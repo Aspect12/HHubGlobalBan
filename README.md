@@ -22,8 +22,8 @@ For the Nutscript and Helix Framework, navigate to the "Nutscript & Helix" folde
 VERSION 8/6 CHANGELOG:
 The plugin has received a few optimizations, as well as a new, more descriptive kick message.
 Specifically, the plugin now performs SteamID checks as soon as the player connects to the server, and the new kick message provides a few possible causes as to why they may be banned, with instructions on how to appeal their ban.
-In addition, players are now get kicked, as opposed to getting banned, enabling easier Global Ban List entry appeals.
-Finally, to expand in our continous effort to ensure that the plugin is unbiased, the plugin has been altered to only kick players if there is definitive proof for what they have done. If there is no definitive proof for what they have done, they will be allowed access to the server, but all online server administrators will be notified of their arrival.
+In addition, players now get kicked, as opposed to getting banned, enabling easier Global Ban List entry appeals.
+Finally, to expand in our continuous effort to ensure that the plugin is unbiased, the plugin has been altered to only kick players if there is definitive proof for what they have done. If there is no definitive proof for what they have done, they will be allowed access to the server, but all online server administrators will be notified of their arrival.
 
 VERSION 7/5 CHANGELOG:
 The plugin now uses new links to fetch the banlist from the web.
